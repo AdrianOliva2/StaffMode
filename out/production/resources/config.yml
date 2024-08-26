@@ -1,0 +1,85 @@
+#Permisos del plugin
+Permission:
+  toogle: 'staffmode.toggle'
+#Mensajes del plugin
+Message:
+  prefix: '&6&l⚡ &e&lStaffMode &6&l⚡ &7» '
+  #Inicio y apagado del plugin
+  enable-plugin: '%prefix% &ePlugin &cactivado &ecorrectamente'
+  disable-plugin: '%prefix% &ePlugin &cdesactivado &ecorrectamente'
+  #Comandos
+  activate-staffmode-to-player: '%prefix% &eSe ha &cactivado &eel modo staff a &c %target%'
+  deactivate-staffmode-to-player: '%prefix% &eSe ha &cdesactivado &eel modo staff a &c %target%'
+  user-is-offline: '%prefix% &cEl usuario &7%target% &cNo está conectado'
+  console-use-staffmode: '%prefix% &cUsa &7/staffmode <Usuario>'
+  player-use-staffmode: '%prefix% &cUsa &7/staffmode &co &7/staffmode <usuario>'
+  player-not-permission: '%prefix% &cNo tienes permiso para hacer esto'
+  player-enable-staffmode: '%prefix% &eSe te ha &cactivado &eel modo staff'
+  player-disable-staffmode: '%prefix% &eSe te ha &cdesactivado &eel modo staff'
+  plugin-reloaded: '%prefix% &eConfiguración recargada &ccorrectamente'
+  #Eventos
+  player-fake-quit: '&7[&c-&7] %player%'
+  player-fake-join: '&7[&a+&7] %player%'
+  player-enable-vanish: '%prefix% &eTe has &cactivado &eel vanish'
+  player-disable-vanish: '%prefix% &eTe has &cdesactivado &eel vanish'
+  player-quit-while-are-freezed: '%prefix% &eEl jugador &c%player% &ese ha desconectado estando congelado'
+  player-join-while-are-freezed: '%prefix% &eEl jugador &c%player% &ese ha conectado estando congelado'
+  cant-freeze-staff: '%prefix% &cNo puedes congelar a un staff'
+  #Los jugadores que están offline pueden ser NPC's o Staff con vanish activado
+  cant-freeze-offline-player: '%prefix% &cNo puedes congelar a ese jugador'
+  player-freeze-target: '%prefix% &eHas &ccongelado &ea &c%target% &ecorrectamente'
+  player-been-freezed: '%prefix% &eHas sido &ccongelado'
+  player-unfreeze-target: '%prefix% &eHas &cdescongelado &ea &c%target% &ecorrectamente'
+  player-been-unfreezed: '%prefix% &eHas sido &cdescongelado'
+  no-players-for-rtp: '%prefix% &cAhora mismo no hay ningún usuario al que te puedas hacer tp'
+#Items del plugin
+Item:
+  vanish:
+    type: BARRIER
+    display-name: '&c&lVanish'
+    lore:
+      - '&7Úsalo para activar y'
+      - '&7desactivar el vanish'
+  player-rtp:
+    type: COMPASS
+    display-name: '&6&lJugador aleatorio'
+    lore:
+      - '&7Úsalo para ir hacia'
+      - '&7un jugador aleatorio'
+  player-freeze:
+    type: ICE
+    display-name: '&9&lCongelar jugador'
+    lore:
+      - '&7Úsalo para congelar'
+      - '&7a un jugador'
+  x-ray-finder:
+    type: DIAMOND_PICKAXE
+    display-name: '&4&lX-Ray Finder'
+    lore:
+      - '&7Úsalo para buscar a usuarios'
+      - '&7con posible X-Ray'
+  deactivate-staffmode:
+    type: MAGMA_BLOCK
+    display-name: '&a&lDesactivar StaffMode'
+    lore:
+      - '&7Úsalo para desactivar'
+      - '&7el modo staff'
+X-Ray-Finder-Menu:
+  title: '&4&lX-Ray Finder'
+  item:
+    borderItem:
+      type: GRAY_STAINED_GLASS_PANE
+      display-name: '&f'
+      lore:
+    previousPage:
+      type: ARROW
+      display-name: '&7Página anterior'
+    actualPage:
+      type: GREEN_STAINED_GLASS_PANE
+      display-name: '&7Página &a&l%actualPlayerPage% &7/ &c&l%maxPage%'
+    nextPage:
+      type: ARROW
+      display-name: '&7Página siguiente'
+    closeMenu:
+      type: BARRIER
+      display-name: '&c&lCerrar'

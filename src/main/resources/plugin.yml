@@ -1,0 +1,11 @@
+name: StaffMode
+version: '1.0-SNAPSHOT'
+main: org.staffmode.mc.staffMode.StaffMode
+api-version: 1.13
+prefix: StaffMode
+authors: [ Adrian_oliva ]
+description: Modo staff para servidores de minecraft.
+commands:
+  staffmode:
+    description: Te activa / desactiva el modo staff.
+    aliases: [sm, staff]
