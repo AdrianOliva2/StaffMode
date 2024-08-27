@@ -17,13 +17,8 @@ class DataManager private constructor(private val plugin: StaffMode) {
     private var staffModePlayersFile: File? = null
     private var staffModePlayersFileConfiguration: FileConfiguration? = null
 
-    @JvmField
-    var frozedPlayers: MutableList<String> = mutableListOf()
-
-    @JvmField
+    var frozedPlayerList: MutableList<String> = mutableListOf()
     var staffModeList: MutableList<UUID> = mutableListOf()
-
-    @JvmField
     val playerInventoryContentMap: MutableMap<String, Array<ItemStack>> = HashMap()
 
     fun reloadfreezedPlayers() {
@@ -41,7 +36,7 @@ class DataManager private constructor(private val plugin: StaffMode) {
         (freezedPlayersFileConfiguration as YamlConfiguration).getConfigurationSection("FreezedPlayers")?.getKeys(false)
             ?.forEach { key ->
                 val uuid = UUID.fromString(key)
-                frozedPlayers.add(uuid.toString())
+                frozedPlayerList.add(uuid.toString())
             }
     }
 
@@ -68,6 +63,7 @@ class DataManager private constructor(private val plugin: StaffMode) {
         if (!freezedPlayersFile!!.exists()) plugin.saveResource("freezedPlayers.yml", false)
     }
 
+    @Suppress("unchecked_cast")
     fun reloadStaffModePlayers() {
         if (this.staffModePlayersFile == null) this.staffModePlayersFile = File(
             plugin.dataFolder, "staffModePlayers.yml"
@@ -83,17 +79,19 @@ class DataManager private constructor(private val plugin: StaffMode) {
         (staffModePlayersFileConfiguration as YamlConfiguration).getConfigurationSection("Staffs")?.getKeys(false)
             ?.forEach { key ->
                 val uuid = UUID.fromString(key)
-                (staffModeList as MutableList<UUID>).add(uuid)
+
+                val activated = staffModePlayersFileConfiguration?.getBoolean("Staffs.$key.activated") ?: false
+                if (activated && !staffModeList.contains(uuid)) staffModeList.add(uuid)
             }
         (staffModePlayersFileConfiguration as YamlConfiguration).getConfigurationSection("Staffs")?.getKeys(false)
             ?.forEach { key ->
                 (staffModePlayersFileConfiguration as YamlConfiguration).getConfigurationSection("Staffs.$key")
                     ?.getKeys(false)?.forEach { _ ->
-                    val uuid = UUID.fromString(key)
-                    val itemList =
-                        (staffModePlayersFileConfiguration as YamlConfiguration).getList("Staffs.$key.inventory") as List<ItemStack>?
-                    if (itemList != null) playerInventoryContentMap[uuid.toString()] = itemList.toTypedArray()
-                }
+                        val uuid = UUID.fromString(key)
+                        val itemList =
+                            (staffModePlayersFileConfiguration as YamlConfiguration).getList("Staffs.$key.inventory") as List<ItemStack>?
+                        if (itemList != null) playerInventoryContentMap[uuid.toString()] = itemList.toTypedArray()
+                    }
             }
     }
 
@@ -122,8 +120,8 @@ class DataManager private constructor(private val plugin: StaffMode) {
 
     fun setFrozedPlayers(players: MutableList<String>?) {
         if (players == null) return
-        this.frozedPlayers = players
-        this.freezedPlayers?.set("Players", players)
+        frozedPlayerList = players
+        freezedPlayers?.set("Players", players)
         saveFreezedPlayers()
         reloadfreezedPlayers()
     }

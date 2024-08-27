@@ -8,7 +8,6 @@ import org.staffmode.mc.staffMode.events.PlayerEvents
 import org.staffmode.mc.staffMode.helper.MessageHelper
 import org.staffmode.mc.staffMode.manager.DataManager
 import org.staffmode.mc.staffMode.manager.InventoryManager
-import java.util.*
 
 @Suppress("unchecked_cast")
 class StaffMode : JavaPlugin() {
@@ -24,7 +23,7 @@ class StaffMode : JavaPlugin() {
 
         val freezedPlayersFileConfiguration = dataManager?.freezedPlayers
         val frozedPlayersConfig = freezedPlayersFileConfiguration?.getStringList("Players")
-        if (frozedPlayersConfig != null) dataManager?.frozedPlayers = frozedPlayersConfig
+        if (frozedPlayersConfig != null) dataManager?.frozedPlayerList = frozedPlayersConfig
         prefix = config.getString("Message.prefix")
         registerCommands()
         registerEvents()
@@ -44,7 +43,7 @@ class StaffMode : JavaPlugin() {
     }
 
     override fun onDisable() {
-        val frozedPlayers = dataManager?.frozedPlayers
+        val frozedPlayers = dataManager?.frozedPlayerList
         val freezedPlayersFileConfiguration = dataManager?.freezedPlayers
         if (!frozedPlayers.isNullOrEmpty()) {
             val frozedPlayersConfig = freezedPlayersFileConfiguration?.getList("Players") as MutableList<String>
@@ -66,30 +65,17 @@ class StaffMode : JavaPlugin() {
         }
         if (dataManager?.staffModeList?.isNotEmpty() == true) {
             val smc = StaffModeCommand.getInstance(this)
-            val staffModePlayers = dataManager.staffModeList
-            val temp: MutableList<UUID> = staffModePlayers.toMutableList()
-            /*var i = 0
-            while (i < staffModePlayers.size) {
-                val uuid = staffModePlayers[i]
+            var i = 0
+            while (i < dataManager.staffModeList.size) {
+                val uuid = dataManager.staffModeList[i]
                 val player = Bukkit.getPlayer(uuid)
-                if (player != null) {
-                    smc?.deactivateStaffMode(player)
-                    if ((player.openInventory.title() == LegacyComponentSerializer.legacyAmpersand().deserialize("&4&lX-Ray Finder"))) player.closeInventory()
-                    staffModePlayers.remove(uuid)
-                    i--
-                }
                 i++
-            }*/
-            //TODO: Fix this problem with staffModeList Loop when server executes /stop
-            for (i in 0..temp.size) {
-                val uuid = staffModePlayers[i]
-                val player = Bukkit.getPlayer(uuid)
                 if (player != null) {
                     smc?.deactivateStaffMode(player)
                     if ((player.openInventory.title() == LegacyComponentSerializer.legacyAmpersand()
                             .deserialize("&4&lX-Ray Finder"))
                     ) player.closeInventory()
-                    staffModePlayers.remove(uuid)
+                    i--
                 }
             }
         }

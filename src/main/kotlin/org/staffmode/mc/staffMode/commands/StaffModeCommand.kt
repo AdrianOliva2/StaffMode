@@ -21,15 +21,12 @@ class StaffModeCommand private constructor(private val plugin: StaffMode) : Comm
 
     private val dataManager: DataManager? = DataManager.getInstance(plugin)
 
-    val staffModeList: MutableList<UUID>?
-
     private val msgHelper: MessageHelper?
     private val config: FileConfiguration
     private val replaces: MutableMap<String, String>?
 
     init {
         playerInventoryContentMap = dataManager?.playerInventoryContentMap
-        staffModeList = dataManager?.staffModeList?.toMutableList()
         msgHelper = MessageHelper.getInstance(plugin)
         config = plugin.config
         replaces = HashMap()
@@ -52,7 +49,7 @@ class StaffModeCommand private constructor(private val plugin: StaffMode) : Comm
                 } else {
                     val player = Bukkit.getPlayerExact(args[0])
                     if (player != null) {
-                        if (staffModeList == null || !staffModeList.contains(player.uniqueId)) {
+                        if (dataManager?.staffModeList == null || !dataManager.staffModeList.contains(player.uniqueId)) {
                             replaces?.set("%target%", player.name)
                             msgHelper!!.consoleSendMessage("Message.activate-staffmode-to-player", replaces)
                             replaces?.remove("%target%")
@@ -75,7 +72,7 @@ class StaffModeCommand private constructor(private val plugin: StaffMode) : Comm
         } else {
             if (sender.hasPermission(config.getString("Permission.toogle")!!) || sender.isOp) {
                 if (args.isEmpty()) {
-                    if (staffModeList == null || !staffModeList.contains(sender.uniqueId)) {
+                    if (dataManager?.staffModeList == null || !dataManager.staffModeList.contains(sender.uniqueId)) {
                         activateStaffMode(sender)
                     } else {
                         deactivateStaffMode(sender)
@@ -93,7 +90,7 @@ class StaffModeCommand private constructor(private val plugin: StaffMode) : Comm
                         val playerStaff = Bukkit.getPlayerExact(args[0])
                         if (playerStaff != null) {
                             replaces?.set("%target%", sender.name)
-                            if (staffModeList == null || !staffModeList.contains(playerStaff.uniqueId)) {
+                            if (dataManager?.staffModeList == null || !dataManager.staffModeList.contains(playerStaff.uniqueId)) {
                                 msgHelper!!.consoleSendMessage("Message.activate-staffmode-to-player", replaces)
                                 activateStaffMode(playerStaff)
                             } else {
@@ -118,11 +115,11 @@ class StaffModeCommand private constructor(private val plugin: StaffMode) : Comm
     }
 
     private fun activateStaffMode(player: Player) {
-        if (dataManager != null && dataManager.frozedPlayers.contains(player.uniqueId.toString())) dataManager.frozedPlayers.remove(
+        if (dataManager != null && dataManager.frozedPlayerList.contains(player.uniqueId.toString())) dataManager.frozedPlayerList.remove(
             player.uniqueId.toString()
         )
 
-        staffModeList?.add(player.uniqueId)
+        dataManager?.staffModeList?.add(player.uniqueId)
         val playerInventory: Inventory = player.inventory
         val playerInventoryContents = player.inventory.contents.clone()
         val staffModePlayersFile = dataManager?.staffModePlayers
@@ -230,7 +227,7 @@ class StaffModeCommand private constructor(private val plugin: StaffMode) : Comm
     }
 
     fun deactivateStaffMode(player: Player) {
-        staffModeList?.remove(player.uniqueId)
+        dataManager?.staffModeList?.remove(player.uniqueId)
         val playerInventoryContent = playerInventoryContentMap?.get(player.uniqueId.toString())
         if (playerInventoryContent != null) {
             player.inventory.contents = playerInventoryContent

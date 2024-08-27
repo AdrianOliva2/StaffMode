@@ -29,11 +29,11 @@ import java.util.*
 class PlayerEvents(private val plugin: StaffMode) : Listener {
     private val dataManager = DataManager.getInstance(plugin)
 
-    private val frozedPlayers: MutableList<String>? = dataManager?.frozedPlayers?.toMutableList()
+    private val frozedPlayers: MutableList<String>? = dataManager?.frozedPlayerList?.toMutableList()
 
     private val smc: StaffModeCommand? = StaffModeCommand.getInstance(plugin)
 
-    private val staffModeList: List<UUID>? = smc?.staffModeList
+    private val staffModeList: List<UUID>? = dataManager?.staffModeList
 
     private val config = plugin.config
     private val msgHelper = MessageHelper.getInstance(plugin)
@@ -212,8 +212,7 @@ class PlayerEvents(private val plugin: StaffMode) : Listener {
             event.isCancelled = true
             val materialVanish = config.getString("Item.vanish.type")!!
             val materialStaffMode = config.getString("Item.deactivate-staffmode.type")!!
-            if (block.type == Material.getMaterial(materialVanish)) //toggleVanish(player);
-                player.chat("/vanish")
+            if (block.type == Material.getMaterial(materialVanish)) toggleVanish(player);
             else if (block.type == Material.getMaterial(materialStaffMode)) smc?.deactivateStaffMode(player)
         }
     }
