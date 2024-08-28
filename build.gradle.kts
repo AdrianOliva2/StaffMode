@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "org.staffmode.mc"
-version = "1.1-SNAPSHOT"
+version = "1.2-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -40,5 +40,5 @@ tasks.processResources {
 }
 
 tasks.shadowJar {
-    destinationDirectory.set(file("../../Todas las carpetas/Test Servers/1.18.2/plugins"))
+    destinationDirectory.set(file("../Todas las carpetas/Test Servers/1.18.2/plugins"))
 }

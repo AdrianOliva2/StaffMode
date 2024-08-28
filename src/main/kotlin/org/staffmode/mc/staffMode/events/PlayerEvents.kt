@@ -21,6 +21,7 @@ import org.bukkit.inventory.EquipmentSlot
 import org.staffmode.mc.staffMode.StaffMode
 import org.staffmode.mc.staffMode.commands.StaffModeCommand
 import org.staffmode.mc.staffMode.helper.MessageHelper
+import org.staffmode.mc.staffMode.helper.StaffModeHelper
 import org.staffmode.mc.staffMode.manager.DataManager
 import org.staffmode.mc.staffMode.manager.InventoryManager
 import java.util.*
@@ -171,11 +172,11 @@ class PlayerEvents(private val plugin: StaffMode) : Listener {
             if (users != null && users.contains(player.uniqueId.toString())) users.remove(player.uniqueId.toString())
         }
 
-        if (!staffModeList.isNullOrEmpty()) {
+        /*if (!staffModeList.isNullOrEmpty()) {
             if (staffModeList.contains(player.uniqueId)) {
                 smc?.deactivateStaffMode(player)
             }
-        }
+        }*/
 
         freezedPlayersFileConfiguration["Players"] = users
         dataManager.saveFreezedPlayers()
@@ -185,7 +186,6 @@ class PlayerEvents(private val plugin: StaffMode) : Listener {
     fun onEnter(event: PlayerJoinEvent) {
         val player = event.player
         val freezedPlayersFileConfiguration = dataManager!!.freezedPlayers
-        dataManager.staffModePlayers
         val users = freezedPlayersFileConfiguration!!.getList("Players") as List<String>?
         if (users != null && users.contains(player.uniqueId.toString())) {
             if (frozedPlayers != null && !frozedPlayers.contains(player.uniqueId.toString())) frozedPlayers.add(player.uniqueId.toString())
@@ -198,6 +198,9 @@ class PlayerEvents(private val plugin: StaffMode) : Listener {
                     replaces.remove("%player%")
                 }
             }
+        }
+        if (dataManager.staffModeList.contains(player.uniqueId)) {
+            StaffModeHelper.givePlayerStaffModeItems(player, config)
         }
     }
 

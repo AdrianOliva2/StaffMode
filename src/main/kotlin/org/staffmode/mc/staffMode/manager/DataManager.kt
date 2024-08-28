@@ -116,6 +116,7 @@ class DataManager private constructor(private val plugin: StaffMode) {
             plugin.dataFolder, "staffModePlayers.yml"
         )
         if (!staffModePlayersFile!!.exists()) plugin.saveResource("staffModePlayers.yml", false)
+        reloadStaffModePlayers()
     }
 
     fun setFrozedPlayers(players: MutableList<String>?) {

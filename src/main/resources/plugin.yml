@@ -1,5 +1,5 @@
 name: StaffMode
-version: '1.1-SNAPSHOT'
+version: '1.2-SNAPSHOT'
 main: org.staffmode.mc.staffMode.StaffMode
 api-version: 1.13
 prefix: StaffMode
