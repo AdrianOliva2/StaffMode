@@ -1,7 +1,6 @@
 package org.staffmode.mc.staffMode.helper
 
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.entity.Player
@@ -23,17 +22,15 @@ class StaffModeHelper {
             var item = ItemStack(Material.getMaterial(material)!!, 1)
             var itemMeta = item.itemMeta
             var displayName = config.getString("Item.vanish.display-name")
-            if (displayName != null) itemMeta.displayName(
-                LegacyComponentSerializer.legacyAmpersand().deserialize(displayName)
-            )
+            if (displayName != null) itemMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName))
             var loreList = config.getStringList("Item.vanish.lore")
-            val loreComponents: MutableList<Component> = mutableListOf()
+            val loreComponents: MutableList<String> = mutableListOf()
             if (loreList.size > 0) {
                 for (i in loreList.indices) {
-                    loreComponents.add(LegacyComponentSerializer.legacyAmpersand().deserialize(loreList[i]))
+                    loreComponents.add(ChatColor.translateAlternateColorCodes('&', loreList[i]))
                 }
             }
-            itemMeta.lore(loreComponents)
+            itemMeta?.lore = loreComponents
             item.setItemMeta(itemMeta)
             playerInventory.setItem(0, item)
 
@@ -42,17 +39,15 @@ class StaffModeHelper {
             item = ItemStack(Material.getMaterial(material)!!, 1)
             itemMeta = item.itemMeta
             displayName = config.getString("Item.player-rtp.display-name")
-            if (displayName != null) itemMeta.displayName(
-                LegacyComponentSerializer.legacyAmpersand().deserialize(displayName)
-            )
+            if (displayName != null) itemMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName))
             loreList = config.getStringList("Item.player-rtp.lore")
             loreComponents.clear()
             if (loreList.isNotEmpty()) {
                 for (i in loreList.indices) {
-                    loreComponents.add(LegacyComponentSerializer.legacyAmpersand().deserialize(loreList[i]))
+                    loreComponents.add(ChatColor.translateAlternateColorCodes('&', loreList[i]))
                 }
             }
-            itemMeta.lore(loreComponents)
+            itemMeta?.lore = loreComponents
             item.setItemMeta(itemMeta)
             playerInventory.setItem(1, item)
 
@@ -61,16 +56,14 @@ class StaffModeHelper {
             item = ItemStack(Material.getMaterial(material)!!, 1)
             itemMeta = item.itemMeta
             displayName = config.getString("Item.player-freeze.display-name")
-            if (displayName != null) itemMeta.displayName(
-                LegacyComponentSerializer.legacyAmpersand().deserialize(displayName)
-            )
+            if (displayName != null) itemMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName))
             loreList = config.getStringList("Item.player-freeze.lore")
             if (loreList.size > 0) {
                 for (i in loreList.indices) {
-                    loreComponents.add(LegacyComponentSerializer.legacyAmpersand().deserialize(loreList[i]))
+                    loreComponents.add(ChatColor.translateAlternateColorCodes('&', loreList[i]))
                 }
             }
-            itemMeta.lore(loreComponents)
+            itemMeta?.lore = loreComponents
             item.setItemMeta(itemMeta)
             playerInventory.setItem(2, item)
 
@@ -79,16 +72,14 @@ class StaffModeHelper {
             item = ItemStack(Material.getMaterial(material)!!, 1)
             itemMeta = item.itemMeta
             displayName = config.getString("Item.x-ray-finder.display-name")
-            if (displayName != null) itemMeta.displayName(
-                LegacyComponentSerializer.legacyAmpersand().deserialize(displayName)
-            )
+            if (displayName != null) itemMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName))
             loreList = config.getStringList("Item.x-ray-finder.lore")
             if (loreList.isNotEmpty()) {
                 for (i in loreList.indices) {
-                    loreComponents.add(LegacyComponentSerializer.legacyAmpersand().deserialize(loreList[i]))
+                    loreComponents.add(ChatColor.translateAlternateColorCodes('&', loreList[i]))
                 }
             }
-            itemMeta.lore(loreComponents)
+            itemMeta?.lore = loreComponents
             item.setItemMeta(itemMeta)
             playerInventory.setItem(3, item)
 
@@ -97,16 +88,14 @@ class StaffModeHelper {
             item = ItemStack(Material.getMaterial(material)!!, 1)
             itemMeta = item.itemMeta
             displayName = config.getString("Item.deactivate-staffmode.display-name")
-            if (displayName != null) itemMeta.displayName(
-                LegacyComponentSerializer.legacyAmpersand().deserialize(displayName)
-            )
+            if (displayName != null) itemMeta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName))
             loreList = config.getStringList("Item.deactivate-staffmode.lore")
             if (loreList.isNotEmpty()) {
                 for (i in loreList.indices) {
-                    loreComponents.add(LegacyComponentSerializer.legacyAmpersand().deserialize(loreList[i]))
+                    loreComponents.add(ChatColor.translateAlternateColorCodes('&', loreList[i]))
                 }
             }
-            itemMeta.lore(loreComponents)
+            itemMeta?.lore = loreComponents
             item.setItemMeta(itemMeta)
             playerInventory.setItem(8, item)
         }

@@ -1,7 +1,7 @@
 package org.staffmode.mc.staffMode.helper
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.staffmode.mc.staffMode.StaffMode
 
@@ -19,7 +19,7 @@ class MessageHelper private constructor(private val plugin: StaffMode) {
                     message = message!!.replace(replaceKey, replaces[replaceKey]!!)
                 } while (iterator.hasNext())
             }
-            player.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(message!!))
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message!!))
             return true
         }
         return false
@@ -36,7 +36,7 @@ class MessageHelper private constructor(private val plugin: StaffMode) {
                     message = message!!.replace(replaceKey, replaces[replaceKey]!!)
                 } while (iterator.hasNext())
             }
-            Bukkit.getConsoleSender().sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(message!!))
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', message!!))
             return true
         }
         return false

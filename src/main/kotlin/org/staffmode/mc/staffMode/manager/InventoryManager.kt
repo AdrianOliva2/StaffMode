@@ -1,8 +1,7 @@
 package org.staffmode.mc.staffMode.manager
 
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -32,13 +31,13 @@ class InventoryManager(private val plugin: StaffMode) : Listener {
                 val item = ItemStack(Material.PLAYER_HEAD, 1)
                 val meta = item.itemMeta as SkullMeta
                 meta.owningPlayer = p
-                meta.displayName(p.name())
-                val lore: MutableList<Component> = ArrayList()
-                lore.add(LegacyComponentSerializer.legacyAmpersand().deserialize("&a&lMundo: &7 ${p.world.name}"))
-                lore.add(LegacyComponentSerializer.legacyAmpersand().deserialize("&a&lX: &7 ${floor(p.location.x)}"))
-                lore.add(LegacyComponentSerializer.legacyAmpersand().deserialize("&a&lY: &7 ${floor(p.location.y)}"))
-                lore.add(LegacyComponentSerializer.legacyAmpersand().deserialize("&a&lZ: &7 ${floor(p.location.z)}"))
-                meta.lore(lore)
+                meta.setDisplayName(p.name)
+                val lore: MutableList<String> = ArrayList()
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lMundo: &7 ${p.world.name}"))
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lX: &7 ${floor(p.location.x)}"))
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lY: &7 ${floor(p.location.y)}"))
+                lore.add(ChatColor.translateAlternateColorCodes('&', "&a&lZ: &7 ${floor(p.location.z)}"))
+                meta.lore = lore
                 item.setItemMeta(meta)
                 heads.add(item)
             }
@@ -51,16 +50,16 @@ class InventoryManager(private val plugin: StaffMode) : Listener {
         val borderItem = ItemStack(Material.getMaterial(material)!!)
         val meta = borderItem.itemMeta
         val displayName = config.getString("X-Ray-Finder-Menu.item.borderItem.display-name")!!
-        meta.displayName(LegacyComponentSerializer.legacyAmpersand().deserialize(displayName))
+        meta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName))
         val lore = config.getStringList("X-Ray-Finder-Menu.item.borderItem.lore")
-        val loreComponents: MutableList<Component> = mutableListOf()
+        val loreComponents: MutableList<String> = mutableListOf()
         lore.forEach {
             if (it.isNotEmpty()) {
-                loreComponents.add(LegacyComponentSerializer.legacyAmpersand().deserialize(it))
+                loreComponents.add(ChatColor.translateAlternateColorCodes('&', it))
             }
         }
-        meta.lore(loreComponents)
-        meta.addItemFlags(
+        meta?.lore = loreComponents
+        meta?.addItemFlags(
             ItemFlag.HIDE_ATTRIBUTES,
             ItemFlag.HIDE_UNBREAKABLE,
             ItemFlag.HIDE_DESTROYS,
@@ -87,7 +86,7 @@ class InventoryManager(private val plugin: StaffMode) : Listener {
         val heads = createHeads(players)
         val inventoryTitle = config.getString("X-Ray-Finder-Menu.title")!!
         val inventory =
-            Bukkit.createInventory(null, 54, LegacyComponentSerializer.legacyAmpersand().deserialize(inventoryTitle))
+            Bukkit.createInventory(null, 54, ChatColor.translateAlternateColorCodes('&', inventoryTitle))
         val actualPlayerPage: Int?
         if (actualPlayersPage.containsKey(player)) actualPlayerPage = actualPlayersPage[player]
         else {
@@ -112,29 +111,29 @@ class InventoryManager(private val plugin: StaffMode) : Listener {
         var item = ItemStack(Material.getMaterial(material!!)!!, 1)
         var meta = item.itemMeta
         var displayName = config.getString("X-Ray-Finder-Menu.item.closeMenu.display-name")!!
-        meta.displayName(LegacyComponentSerializer.legacyAmpersand().deserialize(displayName))
+        meta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName))
         var lore = config.getList("X-Ray-Finder-Menu.item.closeMenu.lore") as List<String?>?
-        var loreComponents: MutableList<Component?> = mutableListOf()
+        var loreComponents: MutableList<String?> = mutableListOf()
         lore?.forEach {
             if (!it.isNullOrEmpty()) {
-                loreComponents.add(LegacyComponentSerializer.legacyAmpersand().deserialize(it))
+                loreComponents.add(ChatColor.translateAlternateColorCodes('&', it))
             }
         }
-        meta.lore(loreComponents)
+        meta?.lore = loreComponents
         item.setItemMeta(meta)
         inventory.setItem((inventory.size - 1), item)
         if (actualPlayerPage!! < maxPages) {
             meta = nextPageItem.itemMeta
             displayName = config.getString("X-Ray-Finder-Menu.item.nextPage.display-name")!!
-            meta.displayName(LegacyComponentSerializer.legacyAmpersand().deserialize(displayName))
+            meta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName))
             lore = config.getList("X-Ray-Finder-Menu.item.nextPage.lore") as List<String?>?
             loreComponents = mutableListOf()
             lore?.forEach {
                 if (!it.isNullOrEmpty()) {
-                    loreComponents.add(LegacyComponentSerializer.legacyAmpersand().deserialize(it))
+                    loreComponents.add(ChatColor.translateAlternateColorCodes('&', it))
                 }
             }
-            meta.lore(loreComponents)
+            meta?.lore = loreComponents
             nextPageItem.setItemMeta(meta)
             inventory.setItem((inventory.size - 3), nextPageItem)
         }
@@ -144,29 +143,29 @@ class InventoryManager(private val plugin: StaffMode) : Listener {
         displayName = config.getString("X-Ray-Finder-Menu.item.actualPage.display-name")!!
         displayName = displayName.replace("%actualPlayerPage%".toRegex(), actualPlayerPage.toString())
         displayName = displayName.replace("%maxPage%".toRegex(), maxPages.toString())
-        meta.displayName(LegacyComponentSerializer.legacyAmpersand().deserialize(displayName))
+        meta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName))
         lore = config.getList("X-Ray-Finder-Menu.item.actualPage.lore") as List<String?>?
         loreComponents = mutableListOf()
         lore?.forEach {
             if (!it.isNullOrEmpty()) {
-                loreComponents.add(LegacyComponentSerializer.legacyAmpersand().deserialize(it))
+                loreComponents.add(ChatColor.translateAlternateColorCodes('&', it))
             }
         }
-        meta.lore(loreComponents)
+        meta?.lore = loreComponents
         item.setItemMeta(meta)
         inventory.setItem((inventory.size - 5), item)
         if (actualPlayerPage > 1) {
             meta = previousPageItem.itemMeta
             displayName = config.getString("X-Ray-Finder-Menu.item.previousPage.display-name")!!
-            meta.displayName(LegacyComponentSerializer.legacyAmpersand().deserialize(displayName))
+            meta?.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName))
             lore = config.getList("X-Ray-Finder-Menu.item.previousPage.lore") as List<String?>?
             loreComponents = mutableListOf()
             lore?.forEach {
                 if (!it.isNullOrEmpty()) {
-                    loreComponents.add(LegacyComponentSerializer.legacyAmpersand().deserialize(it))
+                    loreComponents.add(ChatColor.translateAlternateColorCodes('&', it))
                 }
             }
-            meta.lore(loreComponents)
+            meta?.lore = loreComponents
             previousPageItem.setItemMeta(meta)
             inventory.setItem((inventory.size - 7), previousPageItem)
         }
@@ -189,7 +188,7 @@ class InventoryManager(private val plugin: StaffMode) : Listener {
         val playerClicked = event.whoClicked as Player
         if (item != null && item.type != Material.AIR && inventory!!.type != InventoryType.PLAYER) {
             val menuTitle = config.getString("X-Ray-Finder-Menu.title")!!
-            if (event.view.title() == LegacyComponentSerializer.legacyAmpersand().deserialize(menuTitle)) {
+            if (event.view.title == ChatColor.translateAlternateColorCodes('&', menuTitle)) {
                 val materialCloseItem = config.getString("X-Ray-Finder-Menu.item.closeMenu.type")!!
                 val materialBorderItems = config.getString("X-Ray-Finder-Menu.item.borderItem.type")!!
                 val materialPreviousPage = config.getString("X-Ray-Finder-Menu.item.previousPage.type")!!
@@ -224,17 +223,19 @@ class InventoryManager(private val plugin: StaffMode) : Listener {
                         return
                     }
                     if (item.type == Material.PLAYER_HEAD) {
-                        val displayName: Component? = meta.displayName()
+                        val displayName: String? = meta?.displayName
                         if (displayName != null) {
                             val target = Bukkit.getPlayerExact(
-                                LegacyComponentSerializer.legacyAmpersand().serialize(displayName)
+                                ChatColor.stripColor(displayName)!!
                             )
                             if (target != null) {
                                 playerClicked.teleport(target)
                             } else {
                                 playerClicked.sendMessage(
-                                    LegacyComponentSerializer.legacyAmpersand()
-                                        .deserialize("${plugin.prefix} &cEl jugador se ha desconectado o no estaba conectado")
+                                    ChatColor.translateAlternateColorCodes(
+                                        '&',
+                                        "${plugin.prefix} &cEl jugador se ha desconectado o no estaba conectado"
+                                    )
                                 )
                             }
                         }

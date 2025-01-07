@@ -4,20 +4,18 @@ plugins {
 }
 
 group = "org.staffmode.mc"
-version = "1.2-SNAPSHOT"
+version = "1.2"
 
 repositories {
     mavenCentral()
-    maven("https://repo.papermc.io/repository/maven-public/") {
-        name = "papermc-repo"
-    }
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/groups/public/") {
         name = "sonatype"
     }
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
@@ -40,5 +38,5 @@ tasks.processResources {
 }
 
 tasks.shadowJar {
-    destinationDirectory.set(file("../Todas las carpetas/Test Servers/1.18.2/plugins"))
+    destinationDirectory.set(file("E:/Todas las carpetas/Test Servers/1.18.2/plugins"))
 }
